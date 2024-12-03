@@ -18,7 +18,7 @@ let maze = [
   [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1],
   [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
   [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
-  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+  [3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3],
   [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
   [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
   [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1],
@@ -48,6 +48,8 @@ const colors = {
   0: "#ffffff", // White for empty cells
   1: "#000000", // Black for walls
   2: "#ff0000", // Red for the player
+  3: "#00ff00", // Green for the teleporter
+  4: "#ffff00" // Yellow for pallets 
 };
 
 // Draw the grid on the canvas
@@ -63,6 +65,8 @@ function drawMaze() {
       // Draw grid lines for better visualization
       ctx.strokeStyle = "#cccccc"; // Light gray for grid lines
       ctx.strokeRect(col * gridSize, row * gridSize, gridSize, gridSize);
+
+
     }
   }
 }
@@ -118,7 +122,6 @@ function movePlayer() {
       if (y > 0 && maze[x][y - 1] !== 1) y--;
       // If the player is at the teleporter, teleport them to the other side
       if (x === 11 && y === 0) {
-        x = 11;
         y = 22;
       }
       break;
@@ -126,7 +129,6 @@ function movePlayer() {
       if (y < cols - 1 && maze[x][y + 1] !== 1) y++;
       // If the player is at the teleporter, teleport them to the other side
       if (x === 11 && y === 22) {
-        x = 11;
         y = 0;
       }
       break;
@@ -137,6 +139,10 @@ function movePlayer() {
 
   // Clear the previous player position
   maze[playerPosition[0]][playerPosition[1]] = 0;
+
+  // redrawing the teleporter
+  maze[11][0] = 3;
+  maze[11][22] = 3;
 
   // Set the new player position
   playerPosition = [x, y];
