@@ -5,7 +5,6 @@ const rows = 23;
 const cols = 23;
 const gridSize = 26; // Size of each cell (in pixels) to fit 50x50 grid in 600x600 canvas
 
-
 // Initialize the maze with 0s and set the starting point
 let maze = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -31,7 +30,7 @@ let maze = [
   [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1],
   [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-]
+];
 
 //starting position of player
 let playerPosition = [5, 5];
@@ -73,18 +72,31 @@ drawMaze();
 
 // Function to move the player
 function turnPlayer(event) {
+  console.log("Key pressed: " + event.key);
+
+  let x = playerPosition[0];
+  let y = playerPosition[1];
+
   switch (event.key) {
-    case "w":
-      orientation = 0;
+    case "w": // Up
+      if (x > 0 && maze[x - 1][y] !== 1) {
+        orientation = 0; // Face up
+      }
       break;
-    case "s":
-      orientation = 3;
+    case "s": // Down
+      if (x < rows - 1 && maze[x + 1][y] !== 1) {
+        orientation = 3; // Face down
+      }
       break;
-    case "a":
-      orientation = 1;
+    case "a": // Left
+      if (y > 0 && maze[x][y - 1] !== 1) {
+        orientation = 1; // Face left
+      }
       break;
-    case "d":
-      orientation = 2;
+    case "d": // Right
+      if (y < cols - 1 && maze[x][y + 1] !== 1) {
+        orientation = 2; // Face right
+      }
       break;
   }
 
@@ -119,6 +131,10 @@ function movePlayer() {
   // Set the new player position
   playerPosition = [x, y];
   maze[x][y] = 2;
+
+  console.log("Player position:");
+  console.log(playerPosition);
+  console.log("orientation: " + orientation);
 
   // Redraw the maze
   drawMaze();
