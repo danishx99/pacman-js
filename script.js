@@ -104,9 +104,19 @@ function movePlayer() {
       break;
     case 1: // Left
       if (y > 0 && maze[x][y - 1] !== 1) y--;
+      // If the player is at the teleporter, teleport them to the other side
+      if (x === 11 && y === 0) {
+        x = 11;
+        y = 22;
+      }
       break;
     case 2: // Right
       if (y < cols - 1 && maze[x][y + 1] !== 1) y++;
+      // If the player is at the teleporter, teleport them to the other side
+      if (x === 11 && y === 22) {
+        x = 11;
+        y = 0;
+      }
       break;
     case 3: // Down
       if (x < rows - 1 && maze[x + 1][y] !== 1) x++;
